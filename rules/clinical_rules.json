@@ -1,0 +1,206 @@
+[
+  {
+    "name": "emergencia_hipertensiva",
+    "priority": 1,
+    "condition": {
+      "or": [
+        { ">": ["bp_systolic", 180] },
+        { ">": ["bp_diastolic", 120] }
+      ]
+    },
+    "actions": [
+      {
+        "type": "alert",
+        "severity": "critical",
+        "message": "PA em nível de emergência hipertensiva. Encaminhar com urgência."
+      },
+      {
+        "type": "recommendation",
+        "message": "Iniciar protocolo de crise hipertensiva conforme diretriz local. Reavaliar em 15 minutos."
+      }
+    ]
+  },
+  {
+    "name": "hipoglicemia_grave",
+    "priority": 1,
+    "condition": { "<": ["glucose", 50] },
+    "actions": [
+      {
+        "type": "alert",
+        "severity": "critical",
+        "message": "Hipoglicemia grave (<50 mg/dL). Risco imediato de perda de consciência."
+      },
+      {
+        "type": "recommendation",
+        "message": "Administrar glicose oral (se consciente) ou glucagon IM. Monitorar até normalização."
+      }
+    ]
+  },
+  {
+    "name": "hipertensao_estagio2",
+    "priority": 2,
+    "condition": {
+      "or": [
+        { ">=": ["bp_systolic", 160] },
+        { ">=": ["bp_diastolic", 100] }
+      ]
+    },
+    "actions": [
+      {
+        "type": "alert",
+        "severity": "high",
+        "message": "Hipertensão estágio 2 detectada. Necessita acompanhamento."
+      },
+      {
+        "type": "recommendation",
+        "message": "Iniciar/ajustar anti-hipertensivo. Reavaliar em 7 dias. Encaminhar à UBS se possível."
+      }
+    ]
+  },
+  {
+    "name": "hiperglicemia_grave",
+    "priority": 2,
+    "condition": { ">": ["glucose", 300] },
+    "actions": [
+      {
+        "type": "alert",
+        "severity": "high",
+        "message": "Glicemia muito elevada (>300 mg/dL). Risco de cetoacidose."
+      },
+      {
+        "type": "recommendation",
+        "message": "Hidratar, verificar cetonas se disponível. Ajustar insulina/medicação conforme prescrição. Encaminhar se persistir."
+      }
+    ]
+  },
+  {
+    "name": "diabetico_hipertenso_nao_controlado",
+    "priority": 2,
+    "condition": {
+      "and": [
+        { "in": ["diabetes", "patient.comorbidities"] },
+        { "in": ["hipertensao", "patient.comorbidities"] },
+        {
+          "or": [
+            { ">=": ["bp_systolic", 140] },
+            { ">=": ["bp_diastolic", 90] }
+          ]
+        }
+      ]
+    },
+    "actions": [
+      {
+        "type": "alert",
+        "severity": "high",
+        "message": "Paciente diabético e hipertenso com PA descontrolada. Alto risco cardiovascular."
+      },
+      {
+        "type": "recommendation",
+        "message": "Reforçar adesão ao tratamento. Revisar metas pressóricas (<130/80). Solicitar exames de função renal."
+      }
+    ]
+  },
+  {
+    "name": "suspeita_tuberculose",
+    "priority": 3,
+    "condition": {
+      "and": [
+        { "in": ["tosse_prolongada", "risks_noted"] },
+        {
+          "or": [
+            { "in": ["febre", "risks_noted"] },
+            { "in": ["perda_peso", "risks_noted"] },
+            { "in": ["sudorese_noturna", "risks_noted"] }
+          ]
+        }
+      ]
+    },
+    "actions": [
+      {
+        "type": "alert",
+        "severity": "medium",
+        "message": "Quadro sugestivo de tuberculose. Necessária investigação."
+      },
+      {
+        "type": "recommendation",
+        "message": "Solicitar baciloscopia de escarro e teste rápido molecular (TRM-TB). Notificar vigilância epidemiológica."
+      }
+    ]
+  },
+  {
+    "name": "multimorbidade",
+    "priority": 3,
+    "condition": {
+      ">=": [
+        { "count": "patient.comorbidities" },
+        3
+      ]
+    },
+    "actions": [
+      {
+        "type": "alert",
+        "severity": "medium",
+        "message": "Paciente com 3 ou mais comorbidades. Atenção à polifarmácia e interações medicamentosas."
+      },
+      {
+        "type": "recommendation",
+        "message": "Revisar lista completa de medicamentos. Considerar avaliação geriátrica ou clínica geral."
+      }
+    ]
+  },
+  {
+    "name": "ausencia_pa",
+    "priority": 4,
+    "condition": {
+      "not": { "exists": "bp_systolic" }
+    },
+    "actions": [
+      {
+        "type": "recommendation",
+        "message": "Pressão arterial não registrada. Sempre que possível, aferir PA em todos os atendimentos."
+      }
+    ]
+  },
+  {
+    "name": "hipotensao",
+    "priority": 2,
+    "condition": {
+      "or": [
+        { "<": ["bp_systolic", 90] },
+        { "<": ["bp_diastolic", 60] }
+      ]
+    },
+    "actions": [
+      {
+        "type": "alert",
+        "severity": "high",
+        "message": "Hipotensão detectada. Risco de choque hipovolêmico."
+      },
+      {
+        "type": "recommendation",
+        "message": "Avaliar sinais de perfusão. Verificar hidratação. Encaminhar se sintomático."
+      }
+    ]
+  },
+  {
+    "name": "hiperglicemia_moderada",
+    "priority": 3,
+    "condition": {
+      "and": [
+        { ">": ["glucose", 200] },
+        { "<=": ["glucose", 300] }
+      ]
+    },
+    "actions": [
+      {
+        "type": "alert",
+        "severity": "medium",
+        "message": "Glicemia elevada (200-300 mg/dL). Controle glicêmico insuficiente."
+      },
+      {
+        "type": "recommendation",
+        "message": "Revisar dieta e adesão à medicação. Repetir glicemia de jejum em 7 dias."
+      }
+    ]
+  }
+]

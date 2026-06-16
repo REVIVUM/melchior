@@ -1,0 +1,14 @@
+{
+    "name": "melchio/rules-engine",
+    "description": "Melchio — Motor externo de regras clínicas para monitoramento remoto de saúde",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Melchio\\Engine\\": "src/Engine/"
+        }
+    }
+}

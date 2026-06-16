@@ -1,0 +1,97 @@
+{
+  "caso_1_emergencia_hipertensiva_com_multiplas_regras": {
+    "description": "Diabético hipertenso com PA de emergência, suspeita de TB e multimorbidade — deve disparar 5 regras",
+    "input": {
+      "patient": {
+        "id": "test-001",
+        "name": "Maria Silva",
+        "age": 65,
+        "comorbidities": ["diabetes", "hipertensao", "obesidade"]
+      },
+      "observations": [
+        { "type": "blood_pressure", "systolic_pa": 185, "diastolic_pa": 115 },
+        { "type": "glucose", "value": 280, "unit": "mg/dL" }
+      ],
+      "risks_noted": ["tosse_prolongada", "febre"]
+    },
+    "expected_rules": [
+      "emergencia_hipertensiva",
+      "hipertensao_estagio2",
+      "diabetico_hipertenso_nao_controlado",
+      "suspeita_tuberculose",
+      "multimorbidade"
+    ]
+  },
+  "caso_2_hipoglicemia_grave": {
+    "description": "Paciente com hipoglicemia grave isolada",
+    "input": {
+      "patient": {
+        "id": "test-002",
+        "name": "João Santos",
+        "comorbidities": ["diabetes"]
+      },
+      "observations": [
+        { "type": "blood_pressure", "systolic_pa": 120, "diastolic_pa": 80 },
+        { "type": "glucose", "value": 42, "unit": "mg/dL" }
+      ],
+      "risks_noted": []
+    },
+    "expected_rules": [
+      "hipoglicemia_grave"
+    ]
+  },
+  "caso_3_paciente_saudavel": {
+    "description": "Paciente saudavel — nenhuma regra deve disparar (exceto possível ausencia_pa se faltar)",
+    "input": {
+      "patient": {
+        "id": "test-003",
+        "name": "Ana Oliveira",
+        "age": 30,
+        "comorbidities": []
+      },
+      "observations": [
+        { "type": "blood_pressure", "systolic_pa": 110, "diastolic_pa": 70 },
+        { "type": "glucose", "value": 95, "unit": "mg/dL" }
+      ],
+      "risks_noted": []
+    },
+    "expected_rules": []
+  },
+  "caso_4_sem_pa": {
+    "description": "Paciente sem aferição de PA — deve disparar ausencia_pa",
+    "input": {
+      "patient": {
+        "id": "test-004",
+        "name": "Carlos Mendes",
+        "comorbidities": ["diabetes"]
+      },
+      "observations": [
+        { "type": "glucose", "value": 180, "unit": "mg/dL" }
+      ],
+      "risks_noted": []
+    },
+    "expected_rules": [
+      "ausencia_pa"
+    ]
+  },
+  "caso_5_hipotensao_e_hiperglicemia_moderada": {
+    "description": "Hipotensão + hiperglicemia moderada",
+    "input": {
+      "patient": {
+        "id": "test-005",
+        "name": "Fernanda Lima",
+        "age": 55,
+        "comorbidities": ["diabetes"]
+      },
+      "observations": [
+        { "type": "blood_pressure", "systolic_pa": 85, "diastolic_pa": 55 },
+        { "type": "glucose", "value": 245, "unit": "mg/dL" }
+      ],
+      "risks_noted": []
+    },
+    "expected_rules": [
+      "hipotensao",
+      "hiperglicemia_moderada"
+    ]
+  }
+}
