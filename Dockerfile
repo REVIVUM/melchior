@@ -1,4 +1,4 @@
-FROM php:8.5-fpm-alpine
+FROM php:8.2-fpm-alpine
 
 # Dependências do sistema
 RUN apk add --no-cache nginx supervisor curl
